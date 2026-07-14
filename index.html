@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#2563eb">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <link class="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/5016/5016839.png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/5016/5016839.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -21,10 +21,10 @@
 <body class="bg-gray-50 min-h-screen pb-16 font-sans text-gray-800">
 
     <script>
-        // 💡 대표님의 구글 웹앱 URL 주소 연동 유지
-        const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxMVTtcQyYZZ0jLPn02juPIjYLW-jl4ClnIL4G3nzoNE4ys6TcoU8ZSDsFHZjntvMck/exec";
+        // 🛑 [환경 설정 변수: 발급받으신 새로운 구글 앱스크립트 주소를 여기에 붙여넣으세요]
+        const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxAP3d_0nQxOerBalsQoDzyObXUE0vv9F5gLD9p1ADszCaEM3wn70ju2OnS1ZH7m_3V/exec";
 
-        // 다국어 UI 라벨 사전
+        // 다국어 UI 라벨 사전 (수정사항: Green Grading Date -> Green Grading date 반영 완료)
         const UI_LANG = {
             ko: {
                 title: "생두 품질 검사 결과 입력기",
@@ -69,7 +69,7 @@
                 sec5: "Overall Evaluation",
                 coffeeName: "Coffee Name",
                 grade: "Grade",
-                gradingDate: "Green Grading Date",
+                gradingDate: "Green Grading date",
                 probType: "Type of Problem",
                 sizeUnif: "Overall Visual-Size Uniformity",
                 sizeUnifComm: "Overall Visual-Size Uniformity Comment",
@@ -132,6 +132,7 @@
             }
         };
 
+        // 이미지 헤더 31~51번 명칭 및 오타 정합성 100% 동기화
         const DEFECT_TYPES = [
             "Full black (1)", "Partial Black (2)", "Full sour (1)", "Partial Sour (2)",
             "Reposado (1)", "Cardenello (1)", "Partial Cardenillo (2)", "Butter bean (1)",
@@ -142,7 +143,7 @@
         ];
     </script>
 
-    <div class="max-w-md mx-auto px-4 pt-6">
+    <div class="max-w-xl mx-auto px-4 pt-6">
         <header class="mb-5 flex justify-between items-center bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
             <div>
                 <h1 id="txt-app-title" class="text-lg font-bold text-gray-900">생두 품질 검사 결과 입력기</h1>
@@ -169,6 +170,7 @@
         <form id="qcForm" class="space-y-4">
             <input type="hidden" id="currentRowId" value="">
 
+            <!-- 기본 정보 -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <button type="button" class="w-full px-4 py-3 bg-gray-50 flex justify-between items-center border-b border-gray-150 font-bold text-sm text-gray-800" onclick="toggleAccordion(this)">
                     <span id="lbl-sec1">기본 정보</span>
@@ -177,22 +179,23 @@
                 <div class="accordion-content p-4 space-y-3">
                     <div>
                         <label id="lbl-coffeeName" class="block text-xs font-semibold text-gray-600 mb-1">커피 이름</label>
-                        <input type="text" id="field_1" required class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-400 outline-none">
+                        <input type="text" id="coffeeNameInput" required class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-400 outline-none">
                     </div>
                     <div>
                         <label id="lbl-grade" class="block text-xs font-semibold text-gray-600 mb-1">Grade</label>
-                        <div class="grid grid-cols-2 gap-2" id="group_field_2">
+                        <div class="grid grid-cols-2 gap-2" id="group_grade">
                             <button type="button" data-value="Microlot" class="py-2 text-xs font-medium border border-gray-200 rounded-lg bg-gray-50 select-single">Microlot</button>
                             <button type="button" data-value="Regional" class="py-2 text-xs font-medium border border-gray-200 rounded-lg bg-gray-50 select-single">Regional</button>
                         </div>
                     </div>
                     <div>
                         <label id="lbl-gradingDate" class="block text-xs font-semibold text-gray-600 mb-1">Green Grading date</label>
-                        <input type="date" id="field_3" required class="w-full p-2 border border-gray-300 rounded-lg text-sm outline-none">
+                        <input type="date" id="gradingDateInput" required class="w-full p-2 border border-gray-300 rounded-lg text-sm outline-none">
                     </div>
                 </div>
             </div>
 
+            <!-- 시각적 특성 -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <button type="button" class="w-full px-4 py-3 bg-gray-50 flex justify-between items-center border-b border-gray-150 font-bold text-sm text-gray-800" onclick="toggleAccordion(this, true)">
                     <span id="lbl-sec2">시각적 특성</span>
@@ -201,11 +204,11 @@
                 <div class="accordion-content closed p-4 space-y-4">
                     <div>
                         <label id="lbl-probType" class="block text-xs font-semibold text-gray-600 mb-1.5">Type of Problem</label>
-                        <div class="grid grid-cols-1 gap-1.5" id="group_field_13"></div>
+                        <div class="grid grid-cols-1 gap-1.5" id="group_probType"></div>
                     </div>
                     <div>
                         <label id="lbl-sizeUnif" class="block text-xs font-semibold text-gray-600 mb-1">Overall Visual-Size uniformity</label>
-                        <div class="grid grid-cols-3 gap-2" id="group_field_14">
+                        <div class="grid grid-cols-3 gap-2" id="group_sizeUnif">
                             <button type="button" data-value="Uniform" class="py-1.5 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">Uniform</button>
                             <button type="button" data-value="Average" class="py-1.5 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">Average</button>
                             <button type="button" data-value="Out of average" class="py-1.5 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">Out of average</button>
@@ -213,11 +216,11 @@
                     </div>
                     <div>
                         <label id="lbl-sizeUnifComm" class="block text-xs font-semibold text-gray-600 mb-1.5">Overall Visual-Size uniformity_Comment</label>
-                        <div class="flex flex-col space-y-1.5" id="group_field_15"></div>
+                        <div class="flex flex-col space-y-1.5" id="group_sizeUnifComm"></div>
                     </div>
                     <div>
                         <label id="lbl-colorUnif" class="block text-xs font-semibold text-gray-600 mb-1">Overall Visual-Colour uniformity</label>
-                        <div class="grid grid-cols-3 gap-2" id="group_field_16">
+                        <div class="grid grid-cols-3 gap-2" id="group_colorUnif">
                             <button type="button" data-value="Uniform" class="py-1.5 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">Uniform</button>
                             <button type="button" data-value="Average" class="py-1.5 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">Average</button>
                             <button type="button" data-value="Out of average" class="py-1.5 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">Out of average</button>
@@ -225,7 +228,7 @@
                     </div>
                     <div>
                         <label id="lbl-color" class="block text-xs font-semibold text-gray-600 mb-1">Overall Visual-Colour</label>
-                        <div class="grid grid-cols-1 gap-1.5" id="group_field_17">
+                        <div class="grid grid-cols-1 gap-1.5" id="group_color">
                             <button type="button" data-value="Dark Green" class="py-1.5 text-left px-3 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">Dark Green</button>
                             <button type="button" data-value="Normal Green" class="py-1.5 text-left px-3 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">Normal Green</button>
                             <button type="button" data-value="Light Green" class="py-1.5 text-left px-3 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">Light Green</button>
@@ -237,7 +240,7 @@
                     </div>
                     <div>
                         <label id="lbl-fading" class="block text-xs font-semibold text-gray-600 mb-1">Overall Visual-Overall Fading</label>
-                        <div class="grid grid-cols-1 gap-1.5" id="group_field_18">
+                        <div class="grid grid-cols-1 gap-1.5" id="group_fading">
                             <button type="button" data-value="No Faded" class="py-1.5 text-left px-3 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">No Faded</button>
                             <button type="button" data-value="Slightly Faded" class="py-1.5 text-left px-3 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">Slightly Faded</button>
                             <button type="button" data-value="Severe Faded (Partially decoloured bean cannot be separated)" class="py-1.5 text-left px-3 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">Severe Faded (Partially decoloured bean cannot be separated)</button>
@@ -246,6 +249,7 @@
                 </div>
             </div>
 
+            <!-- 상세 결점두 카운팅 (💡 수동 너비 락 지정으로 찌그러짐 현상 원천 차단) -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <button type="button" class="w-full px-4 py-3 bg-gray-50 flex justify-between items-center border-b border-gray-150 font-bold text-sm text-gray-800" onclick="toggleAccordion(this, true)">
                     <span id="lbl-sec3">상세 결점두 카운팅</span>
@@ -256,6 +260,7 @@
                 </div>
             </div>
 
+            <!-- 중량 및 결점두 영향력 -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <button type="button" class="w-full px-4 py-3 bg-gray-50 flex justify-between items-center border-b border-gray-150 font-bold text-sm text-gray-800" onclick="toggleAccordion(this, true)">
                     <span id="lbl-sec4">중량 및 결점두 영향력</span>
@@ -265,16 +270,16 @@
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label id="lbl-qtyAll" class="block text-xs font-semibold text-gray-600 mb-1">Quantity-All (g)</label>
-                            <input type="number" id="field_28" value="500" class="w-full p-2 border border-gray-300 rounded-lg text-sm bg-gray-50 outline-none">
+                            <input type="number" id="qtyAllInput" value="500" class="w-full p-2 border border-gray-300 rounded-lg text-sm bg-gray-50 outline-none">
                         </div>
                         <div>
                             <label id="lbl-qtyDef" class="block text-xs font-semibold text-gray-600 mb-1">Quantity-Defect (g)</label>
-                            <input type="number" id="field_29" class="w-full p-2 border border-gray-300 rounded-lg text-sm outline-none">
+                            <input type="number" id="qtyDefInput" class="w-full p-2 border border-gray-300 rounded-lg text-sm outline-none">
                         </div>
                     </div>
                     <div>
                         <label id="lbl-defectEffect" class="block text-xs font-semibold text-gray-600 mb-1">Defect-effect to Quality (internal)</label>
-                        <div class="grid grid-cols-3 gap-1.5" id="group_field_19">
+                        <div class="grid grid-cols-3 gap-1.5" id="group_defectEffect">
                             <button type="button" data-value="Low" class="py-1 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">Low</button>
                             <button type="button" data-value="Medium-Low" class="py-1 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">Med-Low</button>
                             <button type="button" data-value="Medium" class="py-1 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">Medium</button>
@@ -285,7 +290,7 @@
                     </div>
                     <div>
                         <label id="lbl-defectInGrade" class="block text-xs font-semibold text-gray-600 mb-1">Defect-in same grade (internal)</label>
-                        <div class="grid grid-cols-3 gap-1.5" id="group_field_20">
+                        <div class="grid grid-cols-3 gap-1.5" id="group_defectInGrade">
                             <button type="button" data-value="Low" class="py-1 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">Low</button>
                             <button type="button" data-value="Average" class="py-1 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">Average</button>
                             <button type="button" data-value="High" class="py-1 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">High</button>
@@ -295,15 +300,16 @@
                     </div>
                     <div>
                         <label id="lbl-majorDefect" class="block text-xs font-semibold text-gray-600 mb-1">Major defect</label>
-                        <div class="grid grid-cols-2 gap-1.5" id="group_field_21"></div>
+                        <div class="grid grid-cols-2 gap-1.5" id="group_majorDefect"></div>
                     </div>
                     <div>
                         <label id="lbl-defectComm" class="block text-xs font-semibold text-gray-600 mb-1">Defect_Comment</label>
-                        <div class="flex flex-col space-y-1.5" id="group_field_22"></div>
+                        <div class="flex flex-col space-y-1.5" id="group_defectComm"></div>
                     </div>
                 </div>
             </div>
 
+            <!-- 종합 평가 -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <button type="button" class="w-full px-4 py-3 bg-gray-50 flex justify-between items-center border-b border-gray-150 font-bold text-sm text-gray-800" onclick="toggleAccordion(this, true)">
                     <span id="lbl-sec5">종합 평가</span>
@@ -312,7 +318,7 @@
                 <div class="accordion-content closed p-4 space-y-3">
                     <div>
                         <label id="lbl-qualityChange" class="block text-xs font-semibold text-gray-600 mb-1">Quality change from PSS</label>
-                        <div class="grid grid-cols-4 gap-1.5" id="group_field_9">
+                        <div class="grid grid-cols-4 gap-1.5" id="group_qualityChange">
                             <button type="button" data-value="Better" class="py-1.5 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">Better</button>
                             <button type="button" data-value="Same" class="py-1.5 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">Same</button>
                             <button type="button" data-value="Worse" class="py-1.5 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">Worse</button>
@@ -321,11 +327,11 @@
                     </div>
                     <div>
                         <label id="lbl-koComment" class="block text-xs font-semibold text-gray-600 mb-1">Overall Quality Comments (KO)</label>
-                        <textarea id="field_11" rows="3" class="w-full p-2 border border-gray-300 rounded-lg text-sm outline-none"></textarea>
+                        <textarea id="koCommentInput" rows="3" class="w-full p-2 border border-gray-300 rounded-lg text-sm outline-none"></textarea>
                     </div>
                     <div>
                         <label id="lbl-enComment" class="block text-xs font-semibold text-gray-600 mb-1">Overall Quality Comments (EN)</label>
-                        <textarea id="field_10" rows="3" class="w-full p-2 border border-gray-300 rounded-lg text-sm outline-none"></textarea>
+                        <textarea id="enCommentInput" rows="3" class="w-full p-2 border border-gray-300 rounded-lg text-sm outline-none"></textarea>
                     </div>
                 </div>
             </div>
@@ -342,19 +348,8 @@
     </div>
 
     <script>
-        let currentLang = "ko";
-        let activeDraftsList = [];
-
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('Service Worker Registered Successfully', reg))
-                    .catch(err => console.error('Service Worker Registration Failed', err));
-            });
-        }
-
         window.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('field_3').value = new Date().toISOString().substring(0, 10);
+            document.getElementById('gradingDateInput').value = new Date().toISOString().substring(0, 10);
             renderLanguageUI();
             buildDefectCounters();
             setupInteractions();
@@ -444,14 +439,14 @@
                 }
             });
 
-            const probGroup = document.getElementById('group_field_13');
+            const probGroup = document.getElementById('group_probType');
             probGroup.innerHTML = '';
             Object.keys(DICTIONARY.problem).forEach(ko => {
                 const label = (currentLang === 'ko') ? ko : DICTIONARY.problem[ko];
                 probGroup.innerHTML += `<button type="button" data-value="${ko}" class="py-2 px-3.5 text-left text-xs border border-gray-200 rounded-lg bg-gray-50 text-gray-700 select-multi transition-all">${label}</button>`;
             });
 
-            const sizeGroup = document.getElementById('group_field_15');
+            const sizeGroup = document.getElementById('group_sizeUnifComm');
             sizeGroup.innerHTML = '';
             Object.keys(DICTIONARY.sizeComment).forEach(ko => {
                 const label = (currentLang === 'ko') ? ko : DICTIONARY.sizeComment[ko];
@@ -459,13 +454,13 @@
             });
 
             const majorList = ["Sour (Yellow/Brown)", "Insect (Bug)", "Broken (Broken/Cracked)", "Shell/Elephant (Deformed)", "Immature (Unripe)", "Discolored (Faded)", "Withered", "Crystallized", "Under dried", "None", "N/A"];
-            const majorGroup = document.getElementById('group_field_21');
+            const majorGroup = document.getElementById('group_majorDefect');
             majorGroup.innerHTML = '';
             majorList.forEach(val => {
                 majorGroup.innerHTML += `<button type="button" data-value="${val}" class="py-2 px-2.5 text-xs border border-gray-200 rounded-lg bg-gray-50 text-gray-700 select-multi transition-all">${val}</button>`;
             });
 
-            const defCommentGroup = document.getElementById('group_field_22');
+            const defCommentGroup = document.getElementById('group_defectComm');
             defCommentGroup.innerHTML = '';
             Object.keys(DICTIONARY.defectComment).forEach(ko => {
                 const label = (currentLang === 'ko') ? ko : DICTIONARY.defectComment[ko];
@@ -483,26 +478,26 @@
             });
         }
 
+        // 💡 레이아웃 해결: 디펙트 박스 가로폭 고정 및 줄바꿈 차단 튜닝 완료
         function buildDefectCounters() {
             const container = document.getElementById('defectCounters');
             container.innerHTML = '';
             DEFECT_TYPES.forEach((name, index) => {
-                const fieldNum = 30 + index;
                 container.innerHTML += `
-                    <div class="bg-gray-50 p-2.5 rounded-lg border border-gray-200 flex items-center justify-between gap-2">
-                        <span class="text-xs font-semibold text-gray-700 break-words max-w-[160px]">${name}</span>
-                        <div class="flex items-center gap-1 shrink-0">
-                            <button type="button" onclick="stepCount(${fieldNum}, -1)" class="w-8 h-8 bg-white border border-gray-300 rounded-lg font-bold text-sm active:bg-gray-100 select-none shadow-2xs">-</button>
-                            <input type="number" id="field_${fieldNum}" value="0" min="0" class="w-12 h-8 text-center bg-white border border-gray-300 rounded-lg text-xs font-bold font-mono outline-none shadow-2xs">
-                            <button type="button" onclick="stepCount(${fieldNum}, 1)" class="w-8 h-8 bg-white border border-gray-300 rounded-lg font-bold text-sm active:bg-gray-100 select-none shadow-2xs">+</button>
+                    <div class="bg-white p-3 rounded-lg border border-gray-200 flex items-center justify-between shadow-sm">
+                        <span class="text-xs font-bold text-gray-700 break-words pr-2 flex-1">${name}</span>
+                        <div class="flex items-center space-x-1 shrink-0 w-28 justify-end">
+                            <button type="button" onclick="stepCount(${index}, -1)" class="w-8 h-8 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-lg font-bold text-sm select-none flex items-center justify-center text-gray-600">-</button>
+                            <input type="number" id="defect_${index}" value="0" min="0" class="w-10 h-8 text-center bg-white border border-gray-300 rounded-lg text-xs font-bold font-mono outline-none shadow-inner">
+                            <button type="button" onclick="stepCount(${index}, 1)" class="w-8 h-8 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-lg font-bold text-sm select-none flex items-center justify-center text-gray-600">+</button>
                         </div>
                     </div>
                 `;
             });
         }
 
-        function stepCount(fieldNum, amount) {
-            const input = document.getElementById(`field_${fieldNum}`);
+        function stepCount(index, amount) {
+            const input = document.getElementById(`defect_${index}`);
             let val = parseInt(input.value) || 0;
             val += amount;
             if(val < 0) val = 0;
@@ -574,10 +569,9 @@
                 select.innerHTML = `<option value="">${defaultTxt}</option>`;
                 if(data.length === 0) return;
                 data.forEach(item => {
-                    const name = item.col_1 || "Unknown Bean";
-                    const date = item.col_11 || "No Date"; 
-                    const rowId = item.col_60;
-                    select.innerHTML += `<option value="${rowId}">${name} (${date.substring(0,10)})</option>`;
+                    const name = item.fields["Coffee"] || "Unknown Bean";
+                    const date = item.fields["Green Grading date"] || "No Date"; 
+                    select.innerHTML += `<option value="${item.rowId}">${name} (${date.substring(0,10)})</option>`;
                 });
             })
             .catch(err => {
@@ -587,61 +581,57 @@
             });
         }
 
-        // 💡 역매핑 엔진 탑재: 시트에 기록된 영문 데이터를 감지해 한글 UI 버튼을 지능적으로 복원 작동
+        // 💡 보정 연산: 동적 명칭 키 매핑 데이터 바인딩 센서 복원
         function loadSelectedDraft(rowId) {
             if(!rowId) {
                 document.getElementById('qcForm').reset();
                 document.getElementById('currentRowId').value = "";
-                document.getElementById('field_28').value = "500";
+                document.getElementById('qtyAllInput').value = "500";
                 document.querySelectorAll('.active-btn').forEach(b => b.classList.remove('active-btn'));
                 return;
             }
             
-            const match = activeDraftsList.find(d => d.col_60 == rowId);
+            const match = activeDraftsList.find(d => d.rowId == rowId);
             if(!match) return;
 
+            var f = match.fields;
             document.getElementById('currentRowId').value = rowId;
-            document.getElementById('field_1').value = match.col_1 || "";
-            setSingleValue('group_field_2', match.col_2);
-            document.getElementById('field_3').value = match.col_11 ? match.col_11.substring(0,10) : "";
-            setSingleValue('group_field_9', match.col_17);
-            document.getElementById('field_10').value = match.col_18 || "";
-            document.getElementById('field_11').value = match.col_19 || "";
+            document.getElementById('coffeeNameInput').value = f["Coffee"] || "";
+            setSingleValue('group_grade', f["Grade"]);
+            document.getElementById('gradingDateInput').value = f["Green Grading date"] ? f["Green Grading date"].substring(0,10) : "";
+            setSingleValue('group_qualityChange', f["Quality change from PSS"]);
+            document.getElementById('enCommentInput').value = f["(EN)Overall Quality Comments"] || "";
+            document.getElementById('koCommentInput').value = f["(KO)Overall Quality Comments"] || "";
 
-            if(match.col_21) {
-                const rawEns = match.col_21.split(', ');
-                const matchedKos = Object.keys(DICTIONARY.problem).filter(k => rawEns.includes(DICTIONARY.problem[k]));
-                setMultiValues('group_field_13', matchedKos);
+            if(f["Type of problem"]) {
+                const rawEns = f["Type of problem"].split(', ');
+                setMultiValues('group_probType', Object.keys(DICTIONARY.problem).filter(k => rawEns.includes(DICTIONARY.problem[k])));
             }
             
-            setSingleValue('group_field_14', match.col_22);
-            if(match.col_23) {
-                const matchedKo = Object.keys(DICTIONARY.sizeComment).find(k => DICTIONARY.sizeComment[k] === match.col_23);
-                if(matchedKo) setSingleValue('group_field_15', matchedKo);
+            setSingleValue('group_sizeUnif', f["Overall Visual-Size uniformity"]);
+            if(f["Overall Visual-Size uniformity_Comment"]) {
+                const matchedKo = Object.keys(DICTIONARY.sizeComment).find(k => DICTIONARY.sizeComment[k] === f["Overall Visual-Size uniformity_Comment"]);
+                if(matchedKo) setSingleValue('group_sizeUnifComm', matchedKo);
             }
-            setSingleValue('group_field_16', match.col_24);
-            setSingleValue('group_field_17', match.col_25);
-            setSingleValue('group_field_18', match.col_26);
-            setSingleValue('group_field_19', match.col_28);
-            setSingleValue('group_field_20', match.col_29);
+            setSingleValue('group_colorUnif', f["Overall Visual-Colour uniformity"]);
+            setSingleValue('group_color', f["Overall Visual-Colour"]);
+            setSingleValue('group_fading', f["Overall Visual-Overall Fading"]);
+            setSingleValue('group_defectEffect', f["Defect-effect to Quality (internal)"]);
+            setSingleValue('group_defectInGrade', f["Defect-in same grade"]);
             
-            if(match.col_30) setMultiValues('group_field_21', match.col_30.split(', '));
-            if(match.col_31) {
-                const rawEns2 = match.col_31.split(', ');
-                const matchedKos2 = Object.keys(DICTIONARY.defectComment).filter(k => rawEns2.includes(DICTIONARY.defectComment[k]));
-                setMultiValues('group_field_22', matchedKos2);
+            if(f["Major defect"]) setMultiValues('group_majorDefect', f["Major defect"].split(', '));
+            if(f["Defect_Comment"]) {
+                const rawEns2 = f["Defect_Comment"].split(', ');
+                setMultiValues('group_defectComm', Object.keys(DICTIONARY.defectComment).filter(k => rawEns2.includes(DICTIONARY.defectComment[k])));
             }
 
-            document.getElementById('field_28').value = match.col_37 !== undefined ? match.col_37 : 500;
-            document.getElementById('field_29').value = match.col_38 || "";
+            document.getElementById('qtyAllInput').value = f["Qauntity-All"] !== undefined ? f["Qauntity-All"] : 500;
+            document.getElementById('qtyDefInput').value = f["Quantity-Defect(g)"] || "";
 
-            for(let c = 30; c <= 50; c++) {
-                const targetInput = document.getElementById(`field_${c}`);
-                if(targetInput) {
-                    const srcColIndex = 39 + (c - 30);
-                    targetInput.value = match["col_" + srcColIndex] || 0;
-                }
-            }
+            DEFECT_TYPES.forEach((name, index) => {
+                const targetInput = document.getElementById(`defect_${index}`);
+                if(targetInput) targetInput.value = f[name] || 0;
+            });
             rebuildDynamicButtons();
         }
 
@@ -651,7 +641,7 @@
                 return;
             }
             
-            const coffeeName = document.getElementById('field_1').value.trim();
+            const coffeeName = document.getElementById('coffeeNameInput').value.trim();
             if(!coffeeName) {
                 alert(currentLang === 'ko' ? "⚠ 커피 이름을 먼저 입력해 주세요." : "⚠ Please input the Coffee Name first.");
                 return;
@@ -669,58 +659,45 @@
                 rowId = "ID_" + Date.now() + "_" + Math.floor(Math.random()*1000);
             }
 
-            // 💡 [수석 개발자 핵심 제어부]: 엑셀 헤더 규격 1번부터 59번까지 한치 오차없이 일치 조율 처리
+            // 💡 [해결 핵심 메커니즘]: 이미지의 명칭 문자열을 Key로 지정하여 100% 매핑 보장 및 100% 순수 영문 변환 처리
             const fields = {};
-            fields["field_1"] = coffeeName; // 1 (A): Arrival Coffee
-            fields["field_2"] = getSingleValue('group_field_2'); // 2 (B): Grade
-            fields["field_3"] = ""; // 3 (C): Evaluation ID (Blank)
-            fields["field_4"] = ""; // 4 (D): Samples Evaluation (Blank)
-            fields["field_5"] = ""; // 5 (E): Sampling date (Blank)
-            fields["field_6"] = ""; // 6 (F): PSS (Blank)
-            fields["field_7"] = ""; // 7 (G): Lot (Blank)
-            fields["field_8"] = ""; // 8 (H): Lot Code (Blank)
-            fields["field_9"] = ""; // I열 (9) 공백 우회
-            fields["field_10"] = ""; // J열 (10) 공백 우회
-            fields["field_11"] = document.getElementById('field_3').value; // 11 (K): Green Grading date
-            fields["field_12"] = ""; // 12 (L): Picture (Blank)
-            fields["field_13"] = ""; fields["field_14"] = ""; fields["field_15"] = ""; fields["field_16"] = ""; // 13~16 공백
-            fields["field_17"] = getSingleValue('group_field_9'); // 17 (Q): Quality change from PSS
+            fields["Coffee"] = coffeeName;
+            fields["Grade"] = getSingleValue('group_grade');
+            fields["Green Grading date"] = document.getElementById('gradingDateInput').value;
+            fields["Picture"] = ""; fields["PSS Green Quality"] = ""; fields["PSS Measurement"] = ""; fields["Measurement (Internal)"] = ""; fields["Diff from PSS"] = "";
+            fields["Quality change from PSS"] = getSingleValue('group_qualityChange');
             
-            const manualEn = document.getElementById('field_10').value.trim();
-            fields["field_18"] = manualEn ? manualEn : `[Ref KO] ${document.getElementById('field_11').value}`; // 18 (R): (EN)Comments
-            fields["field_19"] = document.getElementById('field_11').value; // 19 (S): (KO)Comments
-            fields["field_20"] = ""; // 20 (T): Defect overall
+            const manualEn = document.getElementById('enCommentInput').value.trim();
+            fields["(EN)Overall Quality Comments"] = manualEn ? manualEn : `[Ref KO] ${document.getElementById('koCommentInput').value}`;
+            fields["(KO)Overall Quality Comments"] = document.getElementById('koCommentInput').value;
+            fields["Defect overall"] = "";
             
-            // 💡 수정 완료: 한국어 결합 포맷 탈거, 에어테이블 연동용 '순수 100% 영문 데이터'만 추출 주입
-            const probKos = getMultiValues('group_field_13');
-            fields["field_21"] = probKos.map(k => DICTIONARY.problem[k]).join(', '); // 21 (U): Type of problem
-            fields["field_22"] = getSingleValue('group_field_14'); // 22 (V): Overall Visual-Size uniformity
+            const probKos = getMultiValues('group_probType');
+            fields["Type of problem"] = probKos.map(k => DICTIONARY.problem[k]).join(', ');
+            fields["Overall Visual-Size uniformity"] = getSingleValue('group_sizeUnif');
             
-            const sizeKo = getSingleValue('group_field_15');
-            fields["field_23"] = sizeKo ? DICTIONARY.sizeComment[sizeKo] : ""; // 23 (W): Size uniformity_Comment
+            const sizeKo = getSingleValue('group_sizeUnifComm');
+            fields["Overall Visual-Size uniformity_Comment"] = sizeKo ? DICTIONARY.sizeComment[sizeKo] : "";
             
-            fields["field_24"] = getSingleValue('group_field_16'); // 24 (X): Overall Visual-Colour uniformity
-            fields["field_25"] = getSingleValue('group_field_17'); // 25 (Y): Overall Visual-Colour
-            fields["field_26"] = getSingleValue('group_field_18'); // 26 (Z): Overall Visual-Overall Fading
-            fields["field_27"] = ""; // 27 (AA): Colour_Comment
-            fields["field_28"] = getSingleValue('group_field_19'); // 28 (AB): Defect-effect to Quality (internal)
-            fields["field_29"] = getSingleValue('group_field_20'); // 29 (AC): Defect-in same grade
-            fields["field_30"] = getMultiValues('group_field_21').join(', '); // 30 (AD): Major defect
+            fields["Overall Visual-Colour uniformity"] = getSingleValue('group_colorUnif');
+            fields["Overall Visual-Colour"] = getSingleValue('group_color');
+            fields["Overall Visual-Overall Fading"] = getSingleValue('group_fading');
+            fields["Overall Visual-Colour_Comment"] = "";
+            fields["Defect-effect to Quality (internal)"] = getSingleValue('group_defectEffect');
+            fields["Defect-in same grade"] = getSingleValue('group_defectInGrade');
+            fields["Major defect"] = getMultiValues('group_majorDefect').join(', ');
             
-            const defComKos = getMultiValues('group_field_22');
-            fields["field_31"] = defComKos.map(k => DICTIONARY.defectComment[k]).join(', '); // 31 (AE): Defect_Comment
+            const defComKos = getMultiValues('group_defectComm');
+            fields["Defect_Comment"] = defComKos.map(k => DICTIONARY.defectComment[k]).join(', ');
             
-            fields["field_32"] = ""; fields["field_33"] = ""; fields["field_34"] = ""; fields["field_35"] = ""; fields["field_36"] = ""; // 32~36 공백
-            fields["field_37"] = parseInt(document.getElementById('field_28').value) || 500; // 37 (AK): Qauntity-All
-            fields["field_38"] = parseFloat(document.getElementById('field_29').value) || 0; // 38 (AL): Quantity-Defect(g)
+            fields["1st Group (score)"] = ""; fields["2nd Group (score)"] = ""; fields["Rate of defect-Ex (%)"] = ""; fields["Defect score"] = ""; fields["Green Quality Note"] = "";
+            fields["Qauntity-All"] = parseInt(document.getElementById('qtyAllInput').value) || 500;
+            fields["Quantity-Defect(g)"] = parseFloat(document.getElementById('qtyDefInput').value) || 0;
 
-            // 39번(AM열)부터 59번(BG열)까지 정확한 인덱스 간격 연산으로 개수 주입 마감
-            for(let c = 30; c <= 50; c++) {
-                const targetInput = document.getElementById(`field_${c}`);
-                const val = targetInput ? (parseInt(targetInput.value) || 0) : 0;
-                const destFieldIndex = 39 + (c - 30);
-                fields["field_" + destFieldIndex] = val;
-            }
+            DEFECT_TYPES.forEach((name, index) => {
+                const targetInput = document.getElementById(`defect_${index}`);
+                fields[name] = targetInput ? (parseInt(targetInput.value) || 0) : 0;
+            });
 
             const payload = { rowId: rowId, status: statusMode, fields: fields };
 
