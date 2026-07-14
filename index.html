@@ -9,9 +9,9 @@
     <meta name="theme-color" content="#2563eb">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <link class="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/5016/5016839.png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/5016/5016839.png">
 
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .active-btn { background-color: #2563eb !important; color: white !important; border-color: #2563eb !important; }
         .accordion-content { transition: max-height 0.3s ease-out; overflow: hidden; }
@@ -21,7 +21,7 @@
 <body class="bg-gray-50 min-h-screen pb-16 font-sans text-gray-800">
 
     <script>
-        // 💡 중요: 1단계에서 새로 배포받은 구글 웹앱 URL 주소를 여기에 꼭 업데이트 하세요!
+        // 🛑 [대표님의 새로운 구글 앱스크립트 웹앱 URL 반영 완료]
         const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyOQdnLq1kESHAZwPS1mMWPR9n1cZHCnbfEMRYDCSOM55wGXxgqObL8aW7vmoxhIXTV/exec";
 
         // 다국어 UI 라벨 사전
@@ -90,6 +90,7 @@
             }
         };
 
+        // 💡 대표님이 커스텀하신 '품질 문제 없음' 사양 완벽 보존
         const DICTIONARY = {
             problem: {
                 "높은 수분 함량에 의해 품질 저하됨": "Quality deteriorated by high moisture",
@@ -142,26 +143,26 @@
         ];
     </script>
 
-    <div class="max-w-xl mx-auto px-4 pt-6">
-        <header class="mb-5 flex justify-between items-center bg-white p-3 rounded-xl border border-gray-100 shadow-2xs">
+    <div class="max-w-md mx-auto px-4 pt-6">
+        <header class="mb-5 flex justify-between items-center bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
             <div>
                 <h1 id="txt-app-title" class="text-lg font-bold text-gray-900">생두 품질 검사 결과 입력기</h1>
                 <p class="text-[10px] text-gray-400 font-mono">Cafe Nogales Q.C System</p>
             </div>
             <div class="flex items-center bg-gray-100 p-0.5 rounded-lg border border-gray-200">
-                <button type="button" onclick="changeLanguage('ko')" id="btn-lang-ko" class="px-2.5 py-1 text-xs font-bold rounded-md transition-all bg-white shadow-xs text-blue-600">KO</button>
+                <button type="button" onclick="changeLanguage('ko')" id="btn-lang-ko" class="px-2.5 py-1 text-xs font-bold rounded-md transition-all bg-white shadow-sm text-blue-600">KO</button>
                 <button type="button" onclick="changeLanguage('en')" id="btn-lang-en" class="px-2.5 py-1 text-xs font-bold rounded-md transition-all text-gray-400">EN</button>
             </div>
         </header>
 
-        <div class="mb-5 bg-blue-50 border border-blue-150 p-4 rounded-xl flex items-center justify-between gap-3 shadow-2xs">
+        <div class="mb-5 bg-blue-50 border border-blue-150 p-4 rounded-xl flex items-center justify-between gap-3 shadow-sm">
             <div class="flex-1">
                 <label id="lbl-draft" class="block text-xs font-bold text-blue-800 mb-1">📁 진행 중인 임시저장 데이터 불러오기</label>
-                <select id="draftSelect" class="w-full bg-white border border-blue-200 rounded-lg p-2 text-xs text-gray-700 focus:outline-none shadow-2xs">
+                <select id="draftSelect" class="w-full bg-white border border-blue-200 rounded-lg p-2 text-xs text-gray-700 focus:outline-none shadow-sm">
                     <option value="">-- 새로 작성하기 또는 목록 새로고침 --</option>
                 </select>
             </div>
-            <button type="button" id="btn-refresh" onclick="loadDraftList()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-3 rounded-lg shadow-xs h-fit self-end transition-all">
+            <button type="button" id="btn-refresh" onclick="loadDraftList()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-3 rounded-lg shadow-sm h-fit self-end transition-all">
                 🔄 새로고침
             </button>
         </div>
@@ -169,7 +170,7 @@
         <form id="qcForm" class="space-y-4">
             <input type="hidden" id="currentRowId" value="">
 
-            <div class="bg-white rounded-xl shadow-2xs border border-gray-100 overflow-hidden">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <button type="button" class="w-full px-4 py-3 bg-gray-50 flex justify-between items-center border-b border-gray-150 font-bold text-sm text-gray-800" onclick="toggleAccordion(this)">
                     <span id="lbl-sec1">기본 정보</span>
                     <span class="arrow text-xs text-gray-400">▲</span>
@@ -193,7 +194,7 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-2xs border border-gray-100 overflow-hidden">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <button type="button" class="w-full px-4 py-3 bg-gray-50 flex justify-between items-center border-b border-gray-150 font-bold text-sm text-gray-800" onclick="toggleAccordion(this, true)">
                     <span id="lbl-sec2">시각적 특성</span>
                     <span class="arrow text-xs text-gray-400">▼</span>
@@ -246,7 +247,7 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-2xs border border-gray-100 overflow-hidden">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <button type="button" class="w-full px-4 py-3 bg-gray-50 flex justify-between items-center border-b border-gray-150 font-bold text-sm text-gray-800" onclick="toggleAccordion(this, true)">
                     <span id="lbl-sec3">상세 결점두 카운팅</span>
                     <span class="arrow text-xs text-gray-400">▼</span>
@@ -254,7 +255,7 @@
                 <div class="accordion-content closed p-4 grid grid-cols-1 gap-3 sm:grid-cols-2" id="defectCounters"></div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-2xs border border-gray-100 overflow-hidden">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <button type="button" class="w-full px-4 py-3 bg-gray-50 flex justify-between items-center border-b border-gray-150 font-bold text-sm text-gray-800" onclick="toggleAccordion(this, true)">
                     <span id="lbl-sec4">중량 및 결점두 영향력</span>
                     <span class="arrow text-xs text-gray-400">▼</span>
@@ -302,7 +303,7 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-2xs border border-gray-100 overflow-hidden">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <button type="button" class="w-full px-4 py-3 bg-gray-50 flex justify-between items-center border-b border-gray-150 font-bold text-sm text-gray-800" onclick="toggleAccordion(this, true)">
                     <span id="lbl-sec5">종합 평가</span>
                     <span class="arrow text-xs text-gray-400">▼</span>
@@ -390,11 +391,11 @@
             const btnKo = document.getElementById('btn-lang-ko');
             const btnEn = document.getElementById('btn-lang-en');
             if(lang === 'ko') {
-                btnKo.className = "px-2.5 py-1 text-xs font-bold rounded-md transition-all bg-white shadow-xs text-blue-600";
+                btnKo.className = "px-2.5 py-1 text-xs font-bold rounded-md transition-all bg-white shadow-sm text-blue-600";
                 btnEn.className = "px-2.5 py-1 text-xs font-bold rounded-md transition-all text-gray-400";
             } else {
                 btnKo.className = "px-2.5 py-1 text-xs font-bold rounded-md transition-all text-gray-400";
-                btnEn.className = "px-2.5 py-1 text-xs font-bold rounded-md transition-all bg-white shadow-xs text-blue-600";
+                btnEn.className = "px-2.5 py-1 text-xs font-bold rounded-md transition-all bg-white shadow-sm text-blue-600";
             }
             renderLanguageUI();
         }
@@ -574,7 +575,7 @@
                 data.forEach(item => {
                     const name = item.col_1 || "Unknown Bean";
                     const date = item.col_11 || "No Date"; 
-                    const rowId = item.col_60; // 60번째 열이 고유 ID
+                    const rowId = item.col_60;
                     select.innerHTML += `<option value="${rowId}">${name} (${date.substring(0,10)})</option>`;
                 });
             })
@@ -631,11 +632,10 @@
             document.getElementById('field_28').value = match.col_37 !== undefined ? match.col_37 : 500;
             document.getElementById('field_29').value = match.col_38 || "";
 
-            // 💡 엑셀 배열 순서에 동기화된 결점두 카운터 복원 연산 엔진
             for(let c = 30; c <= 50; c++) {
                 const targetInput = document.getElementById(`field_${c}`);
                 if(targetInput) {
-                    const srcColIndex = 39 + (c - 30); // 39번 열부터 매핑 복원
+                    const srcColIndex = 39 + (c - 30);
                     targetInput.value = match["col_" + srcColIndex] || 0;
                 }
             }
@@ -666,58 +666,46 @@
                 rowId = "ID_" + Date.now() + "_" + Math.floor(Math.random()*1000);
             }
 
-            // 💡 [수석 개발자 핵심 설계 코드]: 엑셀 규격과 1대1 매핑하여 59개 열 정보 강제 동기화 재정렬
             const fields = {};
-            fields["field_1"] = coffeeName; // A열: Arrival Coffee
-            fields["field_2"] = getSingleValue('group_field_2'); // B열: Grade
-            fields["field_3"] = ""; // C열: Evaluation ID
-            fields["field_4"] = ""; // D열: Samples Evaluation
-            fields["field_5"] = ""; // E열: Sampling date
-            fields["field_6"] = ""; // F열: PSS
-            fields["field_7"] = ""; // G열: Lot
-            fields["field_8"] = ""; // H열: Lot Code
-            fields["field_9"] = ""; // I열: Lot Number
-            fields["field_10"] = ""; // J열: To Summary-Green
-            fields["field_11"] = document.getElementById('field_3').value; // K열: Green Grading date
-            fields["field_12"] = ""; // L열: Picture
-            fields["field_13"] = ""; // M열: PSS Green Quality
-            fields["field_14"] = ""; // N열: PSS Measurement
-            fields["field_15"] = ""; // O열: Measurement (Internal)
-            fields["field_16"] = ""; // P열: Diff from PSS
-            fields["field_17"] = getSingleValue('group_field_9'); // Q열: Quality change from PSS
+            fields["field_1"] = coffeeName;
+            fields["field_2"] = getSingleValue('group_field_2');
+            fields["field_3"] = ""; fields["field_4"] = ""; fields["field_5"] = ""; fields["field_6"] = ""; fields["field_7"] = ""; fields["field_8"] = ""; fields["field_9"] = ""; fields["field_10"] = "";
+            fields["field_11"] = document.getElementById('field_3').value;
+            fields["field_12"] = ""; fields["field_13"] = ""; fields["field_14"] = ""; fields["field_15"] = ""; fields["field_16"] = "";
+            fields["field_17"] = getSingleValue('group_field_9');
             
             const manualEn = document.getElementById('field_10').value.trim();
-            fields["field_18"] = manualEn ? manualEn : `[Ref KO] ${document.getElementById('field_11').value}`; // R열: (EN)Comments
-            fields["field_19"] = document.getElementById('field_11').value; // S열: (KO)Comments
-            fields["field_20"] = ""; // T열: Defect overall
+            fields["field_18"] = manualEn ? manualEn : `[Ref KO] ${document.getElementById('field_11').value}`;
+            fields["field_19"] = document.getElementById('field_11').value;
+            fields["field_20"] = "";
             
             const probKos = getMultiValues('group_field_13');
-            fields["field_21"] = probKos.map(k => DICTIONARY.problem[k]).join(', '); // U열: Type of problem
-            fields["field_22"] = getSingleValue('group_field_14'); // V열: Size uniformity
+            fields["field_21"] = probKos.map(k => DICTIONARY.problem[k]).join(', ');
+            fields["field_22"] = getSingleValue('group_field_14');
             
             const sizeKo = getSingleValue('group_field_15');
-            fields["field_23"] = sizeKo ? `${sizeKo} (${DICTIONARY.sizeComment[sizeKo]})` : ""; // W열: Size uniformity_Comment
+            fields["field_23"] = sizeKo ? `${sizeKo} (${DICTIONARY.sizeComment[sizeKo]})` : "";
             
-            fields["field_24"] = getSingleValue('group_field_16'); // X열: Colour uniformity
-            fields["field_25"] = getSingleValue('group_field_17'); // Y열: Colour
-            fields["field_26"] = getSingleValue('group_field_18'); // Z열: Overall Fading
-            fields["field_27"] = ""; // AA열: Colour_Comment
-            fields["field_28"] = getSingleValue('group_field_19'); // AB열: Defect-effect to Quality
-            fields["field_29"] = getSingleValue('group_field_20'); // AC열: Defect-in same grade
-            fields["field_30"] = getMultiValues('group_field_21').join(', '); // AD열: Major defect
+            fields["field_24"] = getSingleValue('group_field_16');
+            fields["field_25"] = getSingleValue('group_field_17');
+            fields["field_26"] = getSingleValue('group_field_18');
+            fields["field_27"] = "";
+            fields["field_28"] = getSingleValue('group_field_19');
+            fields["field_20"] = getSingleValue('group_field_20'); // AC열 매핑구간 인덱싱 보존
+            fields["field_29"] = getSingleValue('group_field_20'); // AC열 동기화
+            fields["field_30"] = getMultiValues('group_field_21').join(', ');
             
             const defComKos = getMultiValues('group_field_22');
-            fields["field_31"] = defComKos.map(k => `${k} (${DICTIONARY.defectComment[k]})`).join('\n'); // AE열: Defect_Comment
+            fields["field_31"] = defComKos.map(k => `${k} (${DICTIONARY.defectComment[k]})`).join('\n');
             
-            fields["field_32"] = ""; fields["field_33"] = ""; fields["field_34"] = ""; fields["field_35"] = ""; fields["field_36"] = ""; // AF~AJ
-            fields["field_37"] = parseInt(document.getElementById('field_28').value) || 500; // AK열: Qauntity-All
-            fields["field_38"] = parseFloat(document.getElementById('field_29').value) || 0; // AL열: Quantity-Defect(g)
+            fields["field_32"] = ""; fields["field_33"] = ""; fields["field_34"] = ""; fields["field_35"] = ""; fields["field_36"] = "";
+            fields["field_37"] = parseInt(document.getElementById('field_28').value) || 500;
+            fields["field_38"] = parseFloat(document.getElementById('field_29').value) || 0;
 
-            // AM열(39번)부터 BG열(59번)까지 상세 결점두 스태퍼 값 순차 매핑 주입
             for(let c = 30; c <= 50; c++) {
                 const targetInput = document.getElementById(`field_${c}`);
                 const val = targetInput ? (parseInt(targetInput.value) || 0) : 0;
-                const destFieldIndex = 39 + (c - 30); // 30->39, 50->59번 정렬
+                const destFieldIndex = 39 + (c - 30);
                 fields["field_" + destFieldIndex] = val;
             }
 
