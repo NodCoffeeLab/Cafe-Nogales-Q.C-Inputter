@@ -21,10 +21,10 @@
 <body class="bg-gray-50 min-h-screen pb-16 font-sans text-gray-800">
 
     <script>
-        // 🛑 [환경 설정 변수: 발급받으신 새로운 구글 앱스크립트 주소]
-        const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxAP3d_0nQxOerBalsQoDzyObXUE0vv9F5gLD9p1ADszCaEM3wn70ju2OnS1ZH7m_3V/exec";
+        // 🛑 [대표님의 실시간 연동 구글 앱스크립트 웹앱 주소 세팅 완료]
+        const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyt9DBHerBcE2uBncTy8-66KOWFuBk6DX3pxPbPnplfN7niizXq8pV1TJ6MuVmJtKyr/exec";
 
-        // 다국어 UI 라벨 사전 (Green Grading date 규격 반영)
+        // 다국어 UI 라벨 사전 (Green Grading date 표기식 고정)
         const UI_LANG = {
             ko: {
                 title: "생두 품질 검사 결과 입력기",
@@ -45,6 +45,7 @@
                 colorUnif: "Overall Visual-Colour uniformity",
                 color: "Overall Visual-Colour",
                 fading: "Overall Visual-Overall Fading",
+                colorComm: "Overall Visual-Colour_Comment",
                 qtyAll: "Quantity-All (g)",
                 qtyDef: "Quantity-Defect (g)",
                 defectEffect: "Defect-effect to Quality (internal)",
@@ -76,6 +77,7 @@
                 colorUnif: "Overall Visual-Colour Uniformity",
                 color: "Overall Visual-Colour",
                 fading: "Overall Visual-Overall Fading",
+                colorComm: "Overall Visual-Colour_Comment",
                 qtyAll: "Quantity-All (g)",
                 qtyDef: "Quantity-Defect (g)",
                 defectEffect: "Defect-effect to Quality (internal)",
@@ -111,6 +113,25 @@
                 "생두 사이의 크기 차이가 있음": "Size difference among green beans exists.",
                 "품질 문제 없음": "No quality issue"
             },
+            // 💡 신규 수용 사항: Overall Visual-Colour_Comment 16가지 국/영문 마스터 매핑 딕셔너리 구축
+            colorComment: {
+                "생두의 색상이 노란색이지만 품질은 정상임": "Green bean color is yellow, but quality is normal.",
+                "생두의 색상이 갈색이지만 품질은 정상임": "Green bean color is brown, but quality is normal.",
+                "생두의 색상이 Dark green이지만 품질은 정상임": "Green bean color is dark green, but quality is normal.",
+                "생두의 색상이 Light green이지만 품질은 정상임": "Green bean color is light green, but quality is normal.",
+                "노란색 생두가 다수 포함되어 있지만 품질은 정상임": "Many yellow beans included, but quality is normal.",
+                "갈색 생두가 다수 포함되어 있지만 품질은 정상임": "Many brown beans included, but quality is normal.",
+                "생두의 색상이 노란색이며 과발효 되었음": "Green bean color is yellow and over-fermented.",
+                "생두의 색상이 갈색이며 과발효 되었음": "Green bean color is brown and over-fermented.",
+                "생두의 색상이 Dark green이며 건조가 덜 되었음": "Green bean color is dark green and under-dried.",
+                "생두의 색상이 Light green이며 과발효 되었음": "Green bean color is light green and over-fermented.",
+                "생두의 색상이 Light green이며 유기물이 손실되었음": "Green bean color is light green and organic matter lost.",
+                "노란색 생두가 다수 포함되어 있으며 과발효되었음": "Many yellow beans included and over-fermented.",
+                "갈색 생두가 다수 포함되어 있으며 과발효되었음": "Many brown beans included and over-fermented.",
+                "생두의 색상이 흰색이며 유기물이 손실되었음": "Green bean color is white and organic matter lost.",
+                "생두의 표면이 약간 바랬음": "Surface of green bean is slightly faded.",
+                "품질 문제 없음": "No quality issue"
+            },
             defectComment: {
                 "생두의 크기가 작기 때문에 실제 디펙트 빈의 함량에 비해 디펙트 점수가 높음.": "Defect score is high compared to actual defect bean content due to small bean size.",
                 "생두의 크기가 크기 때문에 실제 디펙트 빈의 함량에 비해 디펙트 점수가 낮음.": "Defect score is low compared to actual defect bean content due to large bean size.",
@@ -124,7 +145,7 @@
                 "생두 다수에 백화(Fade)가 진행되어 분류가 어려움. 실제 디펙트 함량은 그린 그레이딩 결과보다 높음.": "Many beans are faded, making sorting difficult. Actual defect rate is higher than green grading results.",
                 "생두 다수에 약한 사워가 진행되었으나 강도가 낮아서 디펙트로 분류되지 않음.": "Many beans show slightly sour, but were not classified as defects due to low intensity.",
                 "생두 대부분에 약한 사워가 진행되었으나 강도가 낮아서 디펙트로 분류되지 않음.": "Most beans show slightly sourness, but were not classified as defects due to low intensity.",
-                "생두 다수에사워가 진행되어 분류가 어려움. 실제 디펙트 함량은 그린 그레이딩 결과보다 높음.": "Many beans are sour, making sorting difficult. Actual defect rate is higher than green grading results.",
+                "생두 다수에 사워가 진행되어 분류가 어려움. 실제 디펙트 함량은 그린 그레이딩 결과보다 높음.": "Many beans are sour, making sorting difficult. Actual defect rate is higher than green grading results.",
                 "생두 다수에 미세한 결정화가 진행되었으나 강도가 낮아서 디펙트로 분류되지 않음.": "Many beans show fine crystallization, but were not classified as defects due to low intensity.",
                 "생두 대부분에 미세한 결정화가 진행되었으나 강도가 낮아서 디펙트로 분류되지 않음.": "Most beans show fine crystallization, but were not classified as defects due to low intensity.",
                 "생두 다수에 결정화가 진행되어 분류가 어려움. 실제 디펙트 함량은 그린 그레이딩 결과보다 높음.": "Many beans show crystallization, making sorting difficult. Actual defect rate is higher than green grading results.",
@@ -142,7 +163,8 @@
         ];
     </script>
 
-    <div class="max-w-xl mx-auto px-4 pt-6">
+    <div class="max-w-md mx-auto px-4 pt-6">
+        <!-- 상단 헤더 -->
         <header class="mb-5 flex justify-between items-center bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
             <div>
                 <h1 id="txt-app-title" class="text-lg font-bold text-gray-900">생두 품질 검사 결과 입력기</h1>
@@ -154,6 +176,7 @@
             </div>
         </header>
 
+        <!-- 임시저장 패널 -->
         <div class="mb-5 bg-blue-50 border border-blue-150 p-4 rounded-xl flex items-center justify-between gap-3 shadow-sm">
             <div class="flex-1">
                 <label id="lbl-draft" class="block text-xs font-bold text-blue-800 mb-1">📁 진행 중인 임시저장 데이터 불러오기</label>
@@ -169,6 +192,7 @@
         <form id="qcForm" class="space-y-4">
             <input type="hidden" id="currentRowId" value="">
 
+            <!-- 기본 정보 -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <button type="button" class="w-full px-4 py-3 bg-gray-50 flex justify-between items-center border-b border-gray-150 font-bold text-sm text-gray-800" onclick="toggleAccordion(this)">
                     <span id="lbl-sec1">기본 정보</span>
@@ -193,6 +217,7 @@
                 </div>
             </div>
 
+            <!-- 시각적 특성 -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <button type="button" class="w-full px-4 py-3 bg-gray-50 flex justify-between items-center border-b border-gray-150 font-bold text-sm text-gray-800" onclick="toggleAccordion(this, true)">
                     <span id="lbl-sec2">시각적 특성</span>
@@ -243,9 +268,15 @@
                             <button type="button" data-value="Severe Faded (Partially decoloured bean cannot be separated)" class="py-1.5 text-left px-3 text-xs border border-gray-200 rounded-lg bg-gray-50 select-single">Severe Faded (Partially decoloured bean cannot be separated)</button>
                         </div>
                     </div>
+                    <!-- 💡 신규 삽입 구역: Overall Visual-Colour_Comment 버튼 그룹 컨테이너 -->
+                    <div>
+                        <label id="lbl-colorComm" class="block text-xs font-semibold text-gray-600 mb-1.5">Overall Visual-Colour_Comment</label>
+                        <div class="flex flex-col space-y-1.5" id="group_colorComm"></div>
+                    </div>
                 </div>
             </div>
 
+            <!-- 상세 결점두 카운팅 -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <button type="button" class="w-full px-4 py-3 bg-gray-50 flex justify-between items-center border-b border-gray-150 font-bold text-sm text-gray-800" onclick="toggleAccordion(this, true)">
                     <span id="lbl-sec3">상세 결점두 카운팅</span>
@@ -256,6 +287,7 @@
                 </div>
             </div>
 
+            <!-- 중량 및 결점두 영향력 -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <button type="button" class="w-full px-4 py-3 bg-gray-50 flex justify-between items-center border-b border-gray-150 font-bold text-sm text-gray-800" onclick="toggleAccordion(this, true)">
                     <span id="lbl-sec4">중량 및 결점두 영향력</span>
@@ -304,6 +336,7 @@
                 </div>
             </div>
 
+            <!-- 종합 평가 -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <button type="button" class="w-full px-4 py-3 bg-gray-50 flex justify-between items-center border-b border-gray-150 font-bold text-sm text-gray-800" onclick="toggleAccordion(this, true)">
                     <span id="lbl-sec5">종합 평가</span>
@@ -342,7 +375,6 @@
     </div>
 
     <script>
-        // 💡 해결부: 누락되었던 전역 엔진 변수 완벽 복원 완료
         let currentLang = "ko";
         let activeDraftsList = [];
 
@@ -413,6 +445,7 @@
             document.getElementById('lbl-colorUnif').textContent = data.colorUnif;
             document.getElementById('lbl-color').textContent = data.color;
             document.getElementById('lbl-fading').textContent = data.fading;
+            document.getElementById('lbl-colorComm').textContent = data.colorComm;
             document.getElementById('lbl-qtyAll').textContent = data.qtyAll;
             document.getElementById('lbl-qtyDef').textContent = data.qtyDef;
             document.getElementById('lbl-defectEffect').textContent = data.defectEffect;
@@ -449,6 +482,14 @@
             Object.keys(DICTIONARY.sizeComment).forEach(ko => {
                 const label = (currentLang === 'ko') ? ko : DICTIONARY.sizeComment[ko];
                 sizeGroup.innerHTML += `<button type="button" data-value="${ko}" class="py-2 px-3.5 text-left text-xs border border-gray-200 rounded-lg bg-gray-50 text-gray-700 select-single transition-all">${label}</button>`;
+            });
+
+            // 💡 신규 수용 사항: Overall Visual-Colour_Comment 버튼 엔진 출력 연산
+            const colorCommGroup = document.getElementById('group_colorComm');
+            colorCommGroup.innerHTML = '';
+            Object.keys(DICTIONARY.colorComment).forEach(ko => {
+                const label = (currentLang === 'ko') ? ko : DICTIONARY.colorComment[ko];
+                colorCommGroup.innerHTML += `<button type="button" data-value="${ko}" class="py-2 px-3.5 text-left text-xs border border-gray-200 rounded-lg bg-gray-50 text-gray-700 select-single transition-all">${label}</button>`;
             });
 
             const majorList = ["Sour (Yellow/Brown)", "Insect (Bug)", "Broken (Broken/Cracked)", "Shell/Elephant (Deformed)", "Immature (Unripe)", "Discolored (Faded)", "Withered", "Crystallized", "Under dried", "None", "N/A"];
@@ -612,6 +653,13 @@
             setSingleValue('group_colorUnif', f["Overall Visual-Colour uniformity"]);
             setSingleValue('group_color', f["Overall Visual-Colour"]);
             setSingleValue('group_fading', f["Overall Visual-Overall Fading"]);
+            
+            // 💡 신규 수용 사항: 임시저장 데이터 로드 시 신규 코멘트 복원 바인딩 연산
+            if(f["Overall Visual-Colour_Comment"]) {
+                const matchedColorKo = Object.keys(DICTIONARY.colorComment).find(k => DICTIONARY.colorComment[k] === f["Overall Visual-Colour_Comment"]);
+                if(matchedColorKo) setSingleValue('group_colorComm', matchedColorKo);
+            }
+
             setSingleValue('group_defectEffect', f["Defect-effect to Quality (internal)"]);
             setSingleValue('group_defectInGrade', f["Defect-in same grade"]);
             
@@ -678,6 +726,11 @@
             fields["Overall Visual-Colour"] = getSingleValue('group_color');
             fields["Overall Visual-Overall Fading"] = getSingleValue('group_fading');
             fields["Overall Visual-Colour_Comment"] = "";
+            
+            // 💡 신규 수용 사항: 동적 명칭 대조용 데이터 주입부 파싱 처리
+            const colorKo = getSingleValue('group_colorComm');
+            fields["Overall Visual-Colour_Comment"] = colorKo ? DICTIONARY.colorComment[colorKo] : "";
+
             fields["Defect-effect to Quality (internal)"] = getSingleValue('group_defectEffect');
             fields["Defect-in same grade"] = getSingleValue('group_defectInGrade');
             fields["Major defect"] = getMultiValues('group_majorDefect').join(', ');
