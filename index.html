@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#2563eb">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/5016/5016839.png">
+    <link class="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/5016/5016839.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -21,8 +21,8 @@
 <body class="bg-gray-50 min-h-screen pb-16 font-sans text-gray-800">
 
     <script>
-        // 🛑 [대표님의 새로운 구글 앱스크립트 웹앱 URL 반영 완료]
-        const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyOQdnLq1kESHAZwPS1mMWPR9n1cZHCnbfEMRYDCSOM55wGXxgqObL8aW7vmoxhIXTV/exec";
+        // 💡 대표님의 구글 웹앱 URL 주소 연동 유지
+        const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxMVTtcQyYZZ0jLPn02juPIjYLW-jl4ClnIL4G3nzoNE4ys6TcoU8ZSDsFHZjntvMck/exec";
 
         // 다국어 UI 라벨 사전
         const UI_LANG = {
@@ -90,7 +90,6 @@
             }
         };
 
-        // 💡 대표님이 커스텀하신 '품질 문제 없음' 사양 완벽 보존
         const DICTIONARY = {
             problem: {
                 "높은 수분 함량에 의해 품질 저하됨": "Quality deteriorated by high moisture",
@@ -134,9 +133,9 @@
         };
 
         const DEFECT_TYPES = [
-            "Full Black (1)", "Partial Black (2)", "Full Sour (1)", "Partial Sour (2)",
-            "Reposado (1)", "Cardenillo (1)", "Partial Cardenillo (2)", "Butter Bean (1)",
-            "Foreign matter (1)", "Immature/Unripe (5)", "Deformed/Withered (5)",
+            "Full black (1)", "Partial Black (2)", "Full sour (1)", "Partial Sour (2)",
+            "Reposado (1)", "Cardenello (1)", "Partial Cardenillo (2)", "Butter bean (1)",
+            "Foreign matter (1)", "Immature/Unfipe (5)", "Deformed/Withered (5)",
             "Elephant(Shell, Core)", "Actual Withered", "Flatted bean (5)", "Broken/Chipped (5)",
             "Insect damage (5)", "Slightly Insect damage (10)", "Over dried (5)",
             "Under dried (5)", "Crystalised", "Partially decoloured"
@@ -252,7 +251,9 @@
                     <span id="lbl-sec3">상세 결점두 카운팅</span>
                     <span class="arrow text-xs text-gray-400">▼</span>
                 </button>
-                <div class="accordion-content closed p-4 grid grid-cols-1 gap-3 sm:grid-cols-2" id="defectCounters"></div>
+                <div class="accordion-content closed p-4">
+                    <div id="defectCounters" class="grid grid-cols-1 gap-3 sm:grid-cols-2"></div>
+                </div>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
@@ -586,6 +587,7 @@
             });
         }
 
+        // 💡 역매핑 엔진 탑재: 시트에 기록된 영문 데이터를 감지해 한글 UI 버튼을 지능적으로 복원 작동
         function loadSelectedDraft(rowId) {
             if(!rowId) {
                 document.getElementById('qcForm').reset();
@@ -608,15 +610,15 @@
 
             if(match.col_21) {
                 const rawEns = match.col_21.split(', ');
-                const matchedKos = [];
-                Object.keys(DICTIONARY.problem).forEach(k => {
-                    if(rawEns.includes(DICTIONARY.problem[k])) matchedKos.push(k);
-                });
+                const matchedKos = Object.keys(DICTIONARY.problem).filter(k => rawEns.includes(DICTIONARY.problem[k]));
                 setMultiValues('group_field_13', matchedKos);
             }
             
             setSingleValue('group_field_14', match.col_22);
-            if(match.col_23) setSingleValue('group_field_15', match.col_23.split(' (')[0]);
+            if(match.col_23) {
+                const matchedKo = Object.keys(DICTIONARY.sizeComment).find(k => DICTIONARY.sizeComment[k] === match.col_23);
+                if(matchedKo) setSingleValue('group_field_15', matchedKo);
+            }
             setSingleValue('group_field_16', match.col_24);
             setSingleValue('group_field_17', match.col_25);
             setSingleValue('group_field_18', match.col_26);
@@ -625,8 +627,9 @@
             
             if(match.col_30) setMultiValues('group_field_21', match.col_30.split(', '));
             if(match.col_31) {
-                const lines = match.col_31.split('\n');
-                setMultiValues('group_field_22', lines.map(line => line.split(' (')[0]));
+                const rawEns2 = match.col_31.split(', ');
+                const matchedKos2 = Object.keys(DICTIONARY.defectComment).filter(k => rawEns2.includes(DICTIONARY.defectComment[k]));
+                setMultiValues('group_field_22', matchedKos2);
             }
 
             document.getElementById('field_28').value = match.col_37 !== undefined ? match.col_37 : 500;
@@ -666,42 +669,52 @@
                 rowId = "ID_" + Date.now() + "_" + Math.floor(Math.random()*1000);
             }
 
+            // 💡 [수석 개발자 핵심 제어부]: 엑셀 헤더 규격 1번부터 59번까지 한치 오차없이 일치 조율 처리
             const fields = {};
-            fields["field_1"] = coffeeName;
-            fields["field_2"] = getSingleValue('group_field_2');
-            fields["field_3"] = ""; fields["field_4"] = ""; fields["field_5"] = ""; fields["field_6"] = ""; fields["field_7"] = ""; fields["field_8"] = ""; fields["field_9"] = ""; fields["field_10"] = "";
-            fields["field_11"] = document.getElementById('field_3').value;
-            fields["field_12"] = ""; fields["field_13"] = ""; fields["field_14"] = ""; fields["field_15"] = ""; fields["field_16"] = "";
-            fields["field_17"] = getSingleValue('group_field_9');
+            fields["field_1"] = coffeeName; // 1 (A): Arrival Coffee
+            fields["field_2"] = getSingleValue('group_field_2'); // 2 (B): Grade
+            fields["field_3"] = ""; // 3 (C): Evaluation ID (Blank)
+            fields["field_4"] = ""; // 4 (D): Samples Evaluation (Blank)
+            fields["field_5"] = ""; // 5 (E): Sampling date (Blank)
+            fields["field_6"] = ""; // 6 (F): PSS (Blank)
+            fields["field_7"] = ""; // 7 (G): Lot (Blank)
+            fields["field_8"] = ""; // 8 (H): Lot Code (Blank)
+            fields["field_9"] = ""; // I열 (9) 공백 우회
+            fields["field_10"] = ""; // J열 (10) 공백 우회
+            fields["field_11"] = document.getElementById('field_3').value; // 11 (K): Green Grading date
+            fields["field_12"] = ""; // 12 (L): Picture (Blank)
+            fields["field_13"] = ""; fields["field_14"] = ""; fields["field_15"] = ""; fields["field_16"] = ""; // 13~16 공백
+            fields["field_17"] = getSingleValue('group_field_9'); // 17 (Q): Quality change from PSS
             
             const manualEn = document.getElementById('field_10').value.trim();
-            fields["field_18"] = manualEn ? manualEn : `[Ref KO] ${document.getElementById('field_11').value}`;
-            fields["field_19"] = document.getElementById('field_11').value;
-            fields["field_20"] = "";
+            fields["field_18"] = manualEn ? manualEn : `[Ref KO] ${document.getElementById('field_11').value}`; // 18 (R): (EN)Comments
+            fields["field_19"] = document.getElementById('field_11').value; // 19 (S): (KO)Comments
+            fields["field_20"] = ""; // 20 (T): Defect overall
             
+            // 💡 수정 완료: 한국어 결합 포맷 탈거, 에어테이블 연동용 '순수 100% 영문 데이터'만 추출 주입
             const probKos = getMultiValues('group_field_13');
-            fields["field_21"] = probKos.map(k => DICTIONARY.problem[k]).join(', ');
-            fields["field_22"] = getSingleValue('group_field_14');
+            fields["field_21"] = probKos.map(k => DICTIONARY.problem[k]).join(', '); // 21 (U): Type of problem
+            fields["field_22"] = getSingleValue('group_field_14'); // 22 (V): Overall Visual-Size uniformity
             
             const sizeKo = getSingleValue('group_field_15');
-            fields["field_23"] = sizeKo ? `${sizeKo} (${DICTIONARY.sizeComment[sizeKo]})` : "";
+            fields["field_23"] = sizeKo ? DICTIONARY.sizeComment[sizeKo] : ""; // 23 (W): Size uniformity_Comment
             
-            fields["field_24"] = getSingleValue('group_field_16');
-            fields["field_25"] = getSingleValue('group_field_17');
-            fields["field_26"] = getSingleValue('group_field_18');
-            fields["field_27"] = "";
-            fields["field_28"] = getSingleValue('group_field_19');
-            fields["field_20"] = getSingleValue('group_field_20'); // AC열 매핑구간 인덱싱 보존
-            fields["field_29"] = getSingleValue('group_field_20'); // AC열 동기화
-            fields["field_30"] = getMultiValues('group_field_21').join(', ');
+            fields["field_24"] = getSingleValue('group_field_16'); // 24 (X): Overall Visual-Colour uniformity
+            fields["field_25"] = getSingleValue('group_field_17'); // 25 (Y): Overall Visual-Colour
+            fields["field_26"] = getSingleValue('group_field_18'); // 26 (Z): Overall Visual-Overall Fading
+            fields["field_27"] = ""; // 27 (AA): Colour_Comment
+            fields["field_28"] = getSingleValue('group_field_19'); // 28 (AB): Defect-effect to Quality (internal)
+            fields["field_29"] = getSingleValue('group_field_20'); // 29 (AC): Defect-in same grade
+            fields["field_30"] = getMultiValues('group_field_21').join(', '); // 30 (AD): Major defect
             
             const defComKos = getMultiValues('group_field_22');
-            fields["field_31"] = defComKos.map(k => `${k} (${DICTIONARY.defectComment[k]})`).join('\n');
+            fields["field_31"] = defComKos.map(k => DICTIONARY.defectComment[k]).join(', '); // 31 (AE): Defect_Comment
             
-            fields["field_32"] = ""; fields["field_33"] = ""; fields["field_34"] = ""; fields["field_35"] = ""; fields["field_36"] = "";
-            fields["field_37"] = parseInt(document.getElementById('field_28').value) || 500;
-            fields["field_38"] = parseFloat(document.getElementById('field_29').value) || 0;
+            fields["field_32"] = ""; fields["field_33"] = ""; fields["field_34"] = ""; fields["field_35"] = ""; fields["field_36"] = ""; // 32~36 공백
+            fields["field_37"] = parseInt(document.getElementById('field_28').value) || 500; // 37 (AK): Qauntity-All
+            fields["field_38"] = parseFloat(document.getElementById('field_29').value) || 0; // 38 (AL): Quantity-Defect(g)
 
+            // 39번(AM열)부터 59번(BG열)까지 정확한 인덱스 간격 연산으로 개수 주입 마감
             for(let c = 30; c <= 50; c++) {
                 const targetInput = document.getElementById(`field_${c}`);
                 const val = targetInput ? (parseInt(targetInput.value) || 0) : 0;
