@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#2563eb">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/5016/5016839.png">
+    <link class="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/5016/5016839.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -21,10 +21,10 @@
 <body class="bg-gray-50 min-h-screen pb-16 font-sans text-gray-800">
 
     <script>
-        // 🛑 [환경 설정 변수: 발급받으신 새로운 구글 앱스크립트 주소를 여기에 붙여넣으세요]
+        // 🛑 [환경 설정 변수: 발급받으신 새로운 구글 앱스크립트 주소]
         const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxAP3d_0nQxOerBalsQoDzyObXUE0vv9F5gLD9p1ADszCaEM3wn70ju2OnS1ZH7m_3V/exec";
 
-        // 다국어 UI 라벨 사전 (수정사항: Green Grading Date -> Green Grading date 반영 완료)
+        // 다국어 UI 라벨 사전 (Green Grading date 규격 반영)
         const UI_LANG = {
             ko: {
                 title: "생두 품질 검사 결과 입력기",
@@ -124,7 +124,7 @@
                 "생두 다수에 백화(Fade)가 진행되어 분류가 어려움. 실제 디펙트 함량은 그린 그레이딩 결과보다 높음.": "Many beans are faded, making sorting difficult. Actual defect rate is higher than green grading results.",
                 "생두 다수에 약한 사워가 진행되었으나 강도가 낮아서 디펙트로 분류되지 않음.": "Many beans show slightly sour, but were not classified as defects due to low intensity.",
                 "생두 대부분에 약한 사워가 진행되었으나 강도가 낮아서 디펙트로 분류되지 않음.": "Most beans show slightly sourness, but were not classified as defects due to low intensity.",
-                "생두 다수에 사워가 진행되어 분류가 어려움. 실제 디펙트 함량은 그린 그레이딩 결과보다 높음.": "Many beans are sour, making sorting difficult. Actual defect rate is higher than green grading results.",
+                "생두 다수에사워가 진행되어 분류가 어려움. 실제 디펙트 함량은 그린 그레이딩 결과보다 높음.": "Many beans are sour, making sorting difficult. Actual defect rate is higher than green grading results.",
                 "생두 다수에 미세한 결정화가 진행되었으나 강도가 낮아서 디펙트로 분류되지 않음.": "Many beans show fine crystallization, but were not classified as defects due to low intensity.",
                 "생두 대부분에 미세한 결정화가 진행되었으나 강도가 낮아서 디펙트로 분류되지 않음.": "Most beans show fine crystallization, but were not classified as defects due to low intensity.",
                 "생두 다수에 결정화가 진행되어 분류가 어려움. 실제 디펙트 함량은 그린 그레이딩 결과보다 높음.": "Many beans show crystallization, making sorting difficult. Actual defect rate is higher than green grading results.",
@@ -132,7 +132,6 @@
             }
         };
 
-        // 이미지 헤더 31~51번 명칭 및 오타 정합성 100% 동기화
         const DEFECT_TYPES = [
             "Full black (1)", "Partial Black (2)", "Full sour (1)", "Partial Sour (2)",
             "Reposado (1)", "Cardenello (1)", "Partial Cardenillo (2)", "Butter bean (1)",
@@ -170,7 +169,6 @@
         <form id="qcForm" class="space-y-4">
             <input type="hidden" id="currentRowId" value="">
 
-            <!-- 기본 정보 -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <button type="button" class="w-full px-4 py-3 bg-gray-50 flex justify-between items-center border-b border-gray-150 font-bold text-sm text-gray-800" onclick="toggleAccordion(this)">
                     <span id="lbl-sec1">기본 정보</span>
@@ -195,7 +193,6 @@
                 </div>
             </div>
 
-            <!-- 시각적 특성 -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <button type="button" class="w-full px-4 py-3 bg-gray-50 flex justify-between items-center border-b border-gray-150 font-bold text-sm text-gray-800" onclick="toggleAccordion(this, true)">
                     <span id="lbl-sec2">시각적 특성</span>
@@ -249,7 +246,6 @@
                 </div>
             </div>
 
-            <!-- 상세 결점두 카운팅 (💡 수동 너비 락 지정으로 찌그러짐 현상 원천 차단) -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <button type="button" class="w-full px-4 py-3 bg-gray-50 flex justify-between items-center border-b border-gray-150 font-bold text-sm text-gray-800" onclick="toggleAccordion(this, true)">
                     <span id="lbl-sec3">상세 결점두 카운팅</span>
@@ -260,7 +256,6 @@
                 </div>
             </div>
 
-            <!-- 중량 및 결점두 영향력 -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <button type="button" class="w-full px-4 py-3 bg-gray-50 flex justify-between items-center border-b border-gray-150 font-bold text-sm text-gray-800" onclick="toggleAccordion(this, true)">
                     <span id="lbl-sec4">중량 및 결점두 영향력</span>
@@ -309,7 +304,6 @@
                 </div>
             </div>
 
-            <!-- 종합 평가 -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <button type="button" class="w-full px-4 py-3 bg-gray-50 flex justify-between items-center border-b border-gray-150 font-bold text-sm text-gray-800" onclick="toggleAccordion(this, true)">
                     <span id="lbl-sec5">종합 평가</span>
@@ -348,6 +342,10 @@
     </div>
 
     <script>
+        // 💡 해결부: 누락되었던 전역 엔진 변수 완벽 복원 완료
+        let currentLang = "ko";
+        let activeDraftsList = [];
+
         window.addEventListener('DOMContentLoaded', () => {
             document.getElementById('gradingDateInput').value = new Date().toISOString().substring(0, 10);
             renderLanguageUI();
@@ -478,7 +476,6 @@
             });
         }
 
-        // 💡 레이아웃 해결: 디펙트 박스 가로폭 고정 및 줄바꿈 차단 튜닝 완료
         function buildDefectCounters() {
             const container = document.getElementById('defectCounters');
             container.innerHTML = '';
@@ -581,7 +578,6 @@
             });
         }
 
-        // 💡 보정 연산: 동적 명칭 키 매핑 데이터 바인딩 센서 복원
         function loadSelectedDraft(rowId) {
             if(!rowId) {
                 document.getElementById('qcForm').reset();
@@ -659,7 +655,6 @@
                 rowId = "ID_" + Date.now() + "_" + Math.floor(Math.random()*1000);
             }
 
-            // 💡 [해결 핵심 메커니즘]: 이미지의 명칭 문자열을 Key로 지정하여 100% 매핑 보장 및 100% 순수 영문 변환 처리
             const fields = {};
             fields["Coffee"] = coffeeName;
             fields["Grade"] = getSingleValue('group_grade');
