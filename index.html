@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cafe Nogales Green Bean Q.C System</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/5016/5016839.png">
+
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         .active-btn { background-color: #2563eb !important; color: white !important; border-color: #2563eb !important; }
@@ -95,14 +102,14 @@
                 "이물질": "Foreign matter",
                 "곰팡이": "Fungus",
                 "높은 결점두 함량": "High defect rate",
-                "품질 문제 없음": "No quality issue"
+              "품질 문제 없음": "No quality issue"
             },
             sizeComment: {
                 "규격 외 작은 생두 포함 (#12 이하)": "Under-sized tiny beans included (under #12).",
                 "규격 외 큰 생두 포함 (#20 이상)": "Over-sized large beans included (over #20).",
                 "생두 사이의 크기 차이가 매우 높음": "Size difference among green beans is very high.",
                 "생두 사이의 크기 차이가 있음": "Size difference among green beans exists.",
-                "품질 문제 없음": "No quality issue"
+              "품질 문제 없음": "No quality issue"
             },
             defectComment: {
                 "생두의 크기가 작기 때문에 실제 디펙트 빈의 함량에 비해 디펙트 점수가 높음.": "Defect score is high compared to actual defect bean content due to small bean size.",
@@ -121,7 +128,7 @@
                 "생두 다수에 미세한 결정화가 진행되었으나 강도가 낮아서 디펙트로 분류되지 않음.": "Many beans show fine crystallization, but were not classified as defects due to low intensity.",
                 "생두 대부분에 미세한 결정화가 진행되었으나 강도가 낮아서 디펙트로 분류되지 않음.": "Most beans show fine crystallization, but were not classified as defects due to low intensity.",
                 "생두 다수에 결정화가 진행되어 분류가 어려움. 실제 디펙트 함량은 그린 그레이딩 결과보다 높음.": "Many beans show crystallization, making sorting difficult. Actual defect rate is higher than green grading results.",
-                "품질 문제 없음": "No quality issue"
+              "품질 문제 없음": "No quality issue"
             }
         };
 
@@ -337,6 +344,15 @@
     <script>
         let currentLang = "ko";
         let activeDraftsList = [];
+
+        // 📱 [PWA 서비스 워커 모바일 감지 및 등록 스크립트]
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker Registered Successfully', reg))
+                    .catch(err => console.error('Service Worker Registration Failed', err));
+            });
+        }
 
         window.addEventListener('DOMContentLoaded', () => {
             document.getElementById('field_3').value = new Date().toISOString().substring(0, 10);
@@ -618,7 +634,6 @@
             document.getElementById('field_28').value = match.col_28 !== undefined ? match.col_28 : 500;
             document.getElementById('field_29').value = match.col_29 || "";
 
-            // 💡 안전성 복원 매핑 피드백 반영
             for(let c = 30; c <= 51; c++) {
                 const targetInput = document.getElementById(`field_${c}`);
                 if(targetInput) {
@@ -684,7 +699,6 @@
             fields["field_28"] = parseInt(document.getElementById('field_28').value) || 500;
             fields["field_29"] = parseFloat(document.getElementById('field_29').value) || 0;
 
-            // 💡 [핵심 에러 해결 구간]: field_51을 비롯해 UI에 없는 유령 필드 접근 시 null 크래시가 나지 않도록 차단
             for(let c = 30; c <= 51; c++) {
                 const targetInput = document.getElementById(`field_${c}`);
                 fields["field_" + c] = targetInput ? (parseInt(targetInput.value) || 0) : 0;
